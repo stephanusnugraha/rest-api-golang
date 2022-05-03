@@ -32,11 +32,12 @@ func (d AccountRepositoryDb) Save(a Account) (*Account, *errs.AppError) {
 }
 
 func (d AccountRepositoryDb) FindBy(accountId string) (*Account, *errs.AppError) {
-	sqlGetAccount := "select account_id, customer_id, opening_date, amount from accounts where account_id = ?"
+	sqlGetAccount := "SELECT account_id, customer_id, opening_date, account_type, amount from accounts where account_id = ?"
 	var account Account
 	err := d.client.Get(&account, sqlGetAccount, accountId)
 	if err != nil {
 		logger.Error("Error while fetching account information: " + err.Error())
+		return nil, errs.NewUnexpectedError("Unexpected database error")
 	}
 	return &account, nil
 }

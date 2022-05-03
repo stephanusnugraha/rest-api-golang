@@ -37,22 +37,24 @@ func (ah *AccountHandler) MakeTransaction(w http.ResponseWriter, r *http.Request
 	accountId := vars["account_id"]
 	customerId := vars["customer_id"]
 
-	//decode incoming request
+	// decode incoming request
 	var request dto.TransactionRequest
-	err := json.NewDecoder(r.Body).Decode(&request)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		writeResponse(w, http.StatusBadRequest, err.Error())
 	} else {
-		// build the request object
+
+		//build the request object
 		request.AccountId = accountId
 		request.CustomerId = customerId
 
 		// make transaction
 		account, appError := ah.service.MakeTransaction(request)
+
 		if appError != nil {
-			writeResponse(w, appError.Code, appError.Message)
+			writeResponse(w, appError.Code, appError.AsMessage())
 		} else {
 			writeResponse(w, http.StatusOK, account)
 		}
 	}
+
 }
