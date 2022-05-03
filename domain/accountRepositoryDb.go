@@ -31,6 +31,16 @@ func (d AccountRepositoryDb) Save(a Account) (*Account, *errs.AppError) {
 	return &a, nil
 }
 
+func (d AccountRepositoryDb) FindBy(accountId string) (*Account, *errs.AppError) {
+	sqlGetAccount := "select account_id, customer_id, opening_date, amount from accounts where account_id = ?"
+	var account Account
+	err := d.client.Get(&account, sqlGetAccount, accountId)
+	if err != nil {
+		logger.Error("Error while fetching account information: " + err.Error())
+	}
+	return &account, nil
+}
+
 func NewAccountRepositoryDb(dbClient *sqlx.DB) AccountRepositoryDb {
 	return AccountRepositoryDb{dbClient}
 }

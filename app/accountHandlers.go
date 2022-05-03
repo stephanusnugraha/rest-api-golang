@@ -38,7 +38,7 @@ func (ah *AccountHandler) MakeTransaction(w http.ResponseWriter, r *http.Request
 	customerId := vars["customer_id"]
 
 	//decode incoming request
-	var request dto.NewTransactionRequest
+	var request dto.TransactionRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		writeResponse(w, http.StatusBadRequest, err.Error())

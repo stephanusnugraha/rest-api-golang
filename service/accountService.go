@@ -10,7 +10,8 @@ import (
 const dbTSLayout = "2006-01-02 15:04:05"
 
 type AccountService interface {
-	NewAccount(dto.NewAccountRequest) (*dto.NewAccountResponse, *errs.AppError)
+	NewAccount(request dto.NewAccountRequest) (*dto.NewAccountResponse, *errs.AppError)
+	MakeTransaction(request dto.TransactionRequest) (*dto.TransactionResponse, *errs.AppError)
 }
 
 type DefaultAccountService struct {
